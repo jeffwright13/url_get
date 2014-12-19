@@ -50,12 +50,12 @@ class FortyURLsTest(unittest.TestCase):
                     }
         driver = self.driver
         for url, title in URLs.iteritems():
-            print ("Loading %s..." % url)
+            print ("Loading %s at time %s" % (url, time.strftime('%X')))
             start_time = time.time()
             driver.get(url)
             self.assertIn(title, driver.title)
             end_time = time.time()
-            print ("Finished loading %s." % url)
+            print ("Finished loading %s at time %s" % (url, time.strftime('%X')))
             print ("Time to load: %.1f" % (end_time - start_time))
             time.sleep(.25)
 
