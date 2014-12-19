@@ -2,18 +2,22 @@
 
 def main():
     input_file = 'URLs/40URLs.txt'
-    output_file = 'logs/results-Test'
+    num_iterations = 5
     
     # Get list of URLs from external file and store it in 
     # a dictionary named 'URLs'
     URLs = get_urls(input_file)
-    
-    # Visit each site in the 'URLs' dictionary, and store the
-    # page load times for each in dictionary named 'results'
-    results = visit_urls(URLs)
-    
-    # Write the 'results' dictionary to the file 'output_file'
-    write_to_logfile(output_file, results)
+
+    for iter in range(1, num_iterations+1):
+        print ('Iteration #%s' %iter)
+        print ('=============')
+        # Visit each site in the 'URLs' dictionary, and store the
+        # page load times for each in dictionary named 'results'
+        results = visit_urls(URLs)
+        
+        # Write the 'results' dictionary to the file 'output_file'
+        filename = 'logs/' + get_filename() + '.csv'
+        write_to_logfile(filename, results)
     
 def get_urls(url_file):
     '''
@@ -102,5 +106,24 @@ def write_to_logfile(log_file, dict):
     except IOError:
         print ('Error either opening or writing log file %s' % log_file)
     
+def get_filename():
+    '''
+    Synopsis:
+        get_filename()
+    
+    Description:
+        Function to generate a string representation of a filename based
+        on the current date and time. Useful for logfile names.
+        
+    Input Arguments:
+        None
+    
+    Returns:
+        String
+    '''
+    import time
+    timestr = time.strftime('%Y%m%d-%H%M%S')
+    return timestr
+
 if __name__ == "__main__":
     main()
