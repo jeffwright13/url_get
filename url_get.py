@@ -1,16 +1,51 @@
 #!/usr/bin/python
 
-def main():
+def main2():
+    # Internal execution variables
     input_file = 'URLs/4URLs.txt'
-    num_iterations = 5
+    num_iterations = 3
     
-    # Get list of URLs from external file and store it in 
-    # a dictionary named 'URLs'
+    # main instance
+    testRun = TestRun()
+    
+    # Populate dict of URLs to visit from specified external file
     URLs = get_urls(input_file)
 
+    # Run thru each URL and update The List with results
+    for iter in range(0, num_iterations):
+        print ('Iteration #%s' % (iter+1))
+        print ('=============')
+        
+        # Instantiate a new Iterations() instance for this iteration
+        testRun.iterations.append(Iteration())
+
+        # Visit each site in the 'URLs' dictionary, and store the
+        # page load times for each in dictionary named 'results'
+        results = visit_urls(URLs)
+        testRun.iterations[iter] = results
+        
+        # Write the 'results' dictionary to the file 'output_file'
+        filename = 'logs/' + get_filename() + '.csv'
+        write_to_logfile(filename, results)
+        
+    # Run final results thru stats generator
+    generate_stats(testRun)
+    
+def main():
+    # Internal execution variables
+    input_file = 'URLs/4URLs.txt'
+    num_iterations = 5
+    testRun = TestRun()
+    testRun
+    
+    # Populate dict of URLs to visit from specified external file
+    URLs = get_urls(input_file)
+
+    # Run thru each URL and update The List with results
     for iter in range(1, num_iterations+1):
         print ('Iteration #%s' %iter)
         print ('=============')
+
         # Visit each site in the 'URLs' dictionary, and store the
         # page load times for each in dictionary named 'results'
         results = visit_urls(URLs)
@@ -25,6 +60,12 @@ def get_urls(url_file):
         get_urls(url_file)
     
     Description:
+        Takes an external file, in CSV format, the two
+        columns of which are a URL (e.g. 'http://www.cnn.com') 
+        and some verification text expected in that site's 
+        HTML <title> tag (e.g. 'CNN').
+        Stores an internal data struct (dictionary/associative
+        array), in the format {URL: title-text}.
         
     Input Arguments:
         url_file: A comma-separated-variable (CSV) file with
@@ -32,7 +73,7 @@ def get_urls(url_file):
     
     Returns:
         URLs: a dictionary with key = URL of site, 
-              val = text to expect in site title
+              val = text to expect in site's HTML <title>
     '''
 
     URLs = {}
@@ -129,5 +170,44 @@ def get_filename():
     timestr = time.strftime('%Y%m%d-%H%M%S')
     return timestr
 
+def generate_stats(testRunObj):
+    '''
+    Synopsis:
+        generate_stats(testRunObj)
+    
+    Description:
+        Function to generate statistics of TestRun instance
+        
+    Input Arguments:
+        testRunObj: an instance of type TestRun
+    
+    Returns:
+        None
+    '''
+    for k in testRunObj.iterations:
+        print (k)
+
+class Iteration(object):
+    '''
+    '''
+    def __init__(self):
+        self.load_times = {}
+
+    def __str__(self):
+        print ('load_times:',self.load_times)
+    
+class TestRun(object):
+    '''
+    '''
+    def __init__(self):
+        self.iterations = []
+        self.average = 0.0
+        self.std_dev = 0.0
+
+    def __str__(self):
+        print ('iterations:', self.iterations)
+        print ('average:   ', self.average)
+        print ('std_dev:   ', self.std_dev)
+    
 if __name__ == "__main__":
-    main()
+    main2()
