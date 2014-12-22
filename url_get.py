@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 def main():
-    input_file = 'URLs/40URLs.txt'
+    input_file = 'URLs/4URLs.txt'
     num_iterations = 5
     
     # Get list of URLs from external file and store it in 
@@ -67,6 +67,7 @@ def visit_urls(url_dict):
     # Launch browser using Selenium driver
     firefox = webdriver.Firefox()
     
+    # Visit each URL and verify expected title
     for url, title in url_dict.iteritems():
         print ("Loading %s at time %s" % (url, time.strftime('%X')))
         start_time = time.time()
@@ -77,7 +78,10 @@ def visit_urls(url_dict):
         print ("Time to load: %.1f\n" % (end_time - start_time))
         results_dict[url] = end_time - start_time
         
-    firefox.close()
+    # Close all browser windows
+    for window in firefox.window_handles:
+        firefox.switch_to_window(window)
+        firefox.close()
     
     return results_dict
 
