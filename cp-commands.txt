@@ -1,5 +1,0 @@
-wan
-ls /status/wan/devices/
-get /status/wan/devices/lte-ac6ce334/config/modem/connect_mode
-wan ac6ce334 --modem.connect_mode="3g"
-wan ac6ce334 --modem.connect_mode="lte"
