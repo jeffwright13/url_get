@@ -3,7 +3,7 @@
 def main():
     # Internal execution variables
     input_file = 'URLs/4URLs.txt'
-    num_iterations = 3
+    num_iterations = 1
     
     # main execution class instance
     testRun = TestRun()
@@ -118,6 +118,11 @@ def write_to_logfile(log_file, dict):
     Returns:
         None
     '''
+
+    import os.path
+    directory = os.path.dirname(log_file)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
     try:
         fh = open(log_file, 'w')
