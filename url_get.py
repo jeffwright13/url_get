@@ -88,7 +88,7 @@ def visit_urls(url_dict):
     
     # Visit each URL and verify expected title
     for url, title in url_dict.iteritems():
-        print ("Loading %s at time %s" % (url, time.strftime('%X')))
+        print ("Started loading %s at time %s" % (url, time.strftime('%X')))
         start_time = time.time()
         firefox.get(url)
         end_time = time.time()
