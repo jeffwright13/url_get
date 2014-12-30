@@ -56,3 +56,6 @@ target/
 # url_get specific ignores
 logs/
 *.sh
+
+# Ignore Linux compiled code (.py~ files)
+*.py~
