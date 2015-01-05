@@ -2,8 +2,8 @@
 
 def main():
     # Internal execution variables
-    input_file = 'URLs/4URLs.txt'
-    num_iterations = 1
+    input_file = 'URLs/40URLs.txt'
+    num_iterations = 5
     
     # main execution class instance
     testRun = TestRun()
