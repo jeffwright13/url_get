@@ -4,7 +4,7 @@ def main():
     # Internal execution variables
     input_file = 'URLs/4URLs.txt'
     num_iterations = 2
-    browser = 'Firefox' # Valid choices: "Firefox", "IE" (IE untested yet)
+    browser = 'Firefox' # Valid choices: "Firefox", "Ie" (Ie untested yet)
     
     # main execution class instance
     testRun = TestRun()
@@ -87,8 +87,8 @@ def visit_urls(url_dict, br):
     # Launch browser using Selenium driver
     if br == 'Firefox':
         browser = webdriver.Firefox()
-    elif br == 'IE':
-        pass
+    elif br == 'Ie':
+        browser = webdriver.Ie()
     else:
         raise ValueError('Browser type not supported.')
     
