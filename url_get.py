@@ -2,8 +2,9 @@
 
 def main():
     # Internal execution variables
-    input_file = 'URLs/40URLs.txt'
-    num_iterations = 5
+    input_file = 'URLs/4URLs.txt'
+    num_iterations = 2
+    browser = 'Firefox' # Valid choices: "Firefox", "IE" (IE untested yet)
     
     # main execution class instance
     testRun = TestRun()
@@ -22,7 +23,7 @@ def main():
 
         # Visit each site in the 'URLs' dictionary, and store the
         # page load times for each in dictionary named 'results'
-        results = visit_urls(URLs)
+        results = visit_urls(URLs, browser)
         testRun.iterations[iter] = results
         
         # Write the 'results' dictionary to the file 'output_file'
@@ -61,7 +62,7 @@ def get_urls(url_file):
             URLs[key.strip()] = val.strip()
     return URLs
 
-def visit_urls(url_dict):
+def visit_urls(url_dict, br):
     '''
     Synopsis:
         visit_urls(url_dict)
@@ -84,23 +85,28 @@ def visit_urls(url_dict):
     results_dict = {}
 
     # Launch browser using Selenium driver
-    firefox = webdriver.Firefox()
+    if br == 'Firefox':
+        browser = webdriver.Firefox()
+    elif br == 'IE':
+        pass
+    else:
+        raise ValueError('Browser type not supported.')
     
     # Visit each URL and verify expected title
     for url, title in url_dict.iteritems():
         print ("Started loading %s at time %s" % (url, time.strftime('%X')))
         start_time = time.time()
-        firefox.get(url)
+        browser.get(url)
         end_time = time.time()
-        assert title in firefox.title
+        assert title in browser.title
         print ("Finished loading %s at time %s" % (url, time.strftime('%X')))
         print ("Time to load: %.1f\n" % (end_time - start_time))
         results_dict[url] = end_time - start_time
         
     # Close all browser windows
-    for window in firefox.window_handles:
-        firefox.switch_to_window(window)
-        firefox.close()
+    for window in browser.window_handles:
+        browser.switch_to_window(window)
+        browser.close()
     
     return results_dict
 
