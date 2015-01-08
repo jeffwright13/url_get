@@ -9,3 +9,5 @@ Module reqts:
 selenium
 os (builtin)
 time (builtin)
+
+See Wiki for more details.
