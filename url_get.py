@@ -173,8 +173,13 @@ def generate_stats(testRunObj):
     Returns:
         None
     '''
-    for k in testRunObj.iterations:
-        print (k)
+    k = testRunObj.iterations[0].keys()
+    print ("Sites: ", k)
+	
+    data = []
+    for i in testRunObj.iterations:
+        print (i)
+
 
 class Iteration(object):
     '''
