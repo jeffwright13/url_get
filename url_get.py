@@ -4,7 +4,7 @@ def main():
     # Internal execution variables
     input_file = 'URLs/4URLs.txt'
     num_iterations = 2
-    browser = 'Firefox' # Valid choices: "Firefox", "Ie" (IE untested yet)
+    browser = 'Firefox' # Valid choices: "Firefox", "Ie"
     
     # main execution class instance
     testRun = TestRun()
