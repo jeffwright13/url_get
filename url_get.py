@@ -2,7 +2,7 @@
 
 def main():
     # Internal execution variables
-    input_file = 'URLs/4URLs.txt'
+    input_file = 'URLs/2URLs.txt'
     num_iterations = 2
     browser = 'Firefox' # Valid choices: "Firefox", "Ie"
     
@@ -26,7 +26,7 @@ def main():
         # Visit each site in the 'URLs' dictionary, and store the
         # page load times for each in dictionary named 'results'
         results = visit_urls(URLs, browser)
-        testRun.iterations[iter] = results
+        testRun.iterations[iter].load_times = results
         
         # Write the 'results' dictionary to the file 'output_file'
         filename = 'logs/' + get_filename() + '.csv'
@@ -82,7 +82,6 @@ def visit_urls(url_dict, br):
 
     import time    
     from selenium import webdriver
-    from selenium.webdriver.common.keys import Keys
     
     results_dict = {}
 
@@ -175,35 +174,22 @@ def generate_stats(testRunObj):
     Returns:
         None
     '''
-    k = testRunObj.iterations[0].keys()
-    print ("Sites: ", k)
-	
-    data = []
-    for i in testRunObj.iterations:
-        print (i)
-
+    print testRunObj.iterations
+    for iter in testRunObj.iterations:
+        print iter.load_times.keys()
+        print iter.load_times.values()
 
 class Iteration(object):
     '''
     '''
     def __init__(self):
         self.load_times = {}
-        self.average = 0.0
-        self.std_dev = 0.0
 
-    def __str__(self):
-        print ('load_times:', self.load_times)
-        print ('average:   ', self.average)
-        print ('std_dev:   ', self.std_dev)
-    
 class TestRun(object):
     '''
     '''
     def __init__(self):
         self.iterations = []
-
-    def __str__(self):
-        print ('iterations:', self.iterations)
     
 if __name__ == "__main__":
     main()
