@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import unittest
-from .. import url_get
+import url_get
 
 class TestGetURLs(unittest.TestCase):
     '''Unit tests for function get_urls()'''
