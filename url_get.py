@@ -19,7 +19,9 @@ def main():
         print ('=============')
         
         # Instantiate a new Iterations() instance for this iteration
-        testRun.iterations.append(Iteration())
+        # and append it to the TesRun() instance
+        i = Iteration()
+        testRun.iterations.append(i)
 
         # Visit each site in the 'URLs' dictionary, and store the
         # page load times for each in dictionary named 'results'
