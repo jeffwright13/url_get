@@ -174,10 +174,19 @@ def generate_stats(testRunObj):
     Returns:
         None
     '''
-    print testRunObj.iterations
+    import numpy
+    # print testRunObj.iterations
     for iter in testRunObj.iterations:
-        print iter.load_times
-
+        print iter.load_times.keys()
+        print iter.load_times.values()
+        
+    loadtimes = iter.load_times.values()
+    average = numpy.average(loadtimes)
+    variance = numpy.var(loadtimes)
+    std_dev = numpy.std(loadtimes)
+    
+    print average, variance, std_dev
+    
 class Iteration(object):
     '''
     '''
@@ -189,6 +198,25 @@ class TestRun(object):
     '''
     def __init__(self):
         self.iterations = []
+
+class Statistics(object):
+    '''
+    '''
+    def __init__(self):
+        import math  # conditional import made when instantiated
+        self.averages  = {}
+        self.variances = {}
+        self.std_devs  = {}
     
-if __name__ == "__main__":
+    def average(self, l):
+        ''' 
+        '''
+        pass
+    
+    def std_dev(self, avg, l):
+        '''
+        '''
+        pass
+    
+if __name__ == '__main__':
     main()
