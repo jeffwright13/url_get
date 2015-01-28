@@ -176,8 +176,7 @@ def generate_stats(testRunObj):
     '''
     print testRunObj.iterations
     for iter in testRunObj.iterations:
-        print iter.load_times.keys()
-        print iter.load_times.values()
+        print iter.load_times
 
 class Iteration(object):
     '''
