@@ -33,7 +33,7 @@ def main():
         write_to_logfile(filename, results)
         
     # Run final results thru stats generator
-    generate_stats(testRun)
+    statistics = generate_stats(testRun)
     
 def get_urls(url_file):
     '''
@@ -172,51 +172,49 @@ def generate_stats(testRunObj):
         testRunObj: an instance of type TestRun
     
     Returns:
-        None
+        Statistics() object
     '''
     import numpy
+    
+    url_list = testRunObj.iterations[0].load_times.keys()
+    for elem in url_list:
+        testRunObj.stats.averages[elem] = 0
+    print "url_list: ", url_list
+    print "stats_avgs: ", testRunObj.stats.averages
+    
     # print testRunObj.iterations
     for iter in testRunObj.iterations:
         print iter.load_times.keys()
         print iter.load_times.values()
         
+    print '\n'
     loadtimes = iter.load_times.values()
     average = numpy.average(loadtimes)
     variance = numpy.var(loadtimes)
     std_dev = numpy.std(loadtimes)
     
     print average, variance, std_dev
-    
-class Iteration(object):
-    '''
-    '''
-    def __init__(self):
-        self.load_times = {}
 
 class TestRun(object):
     '''
     '''
     def __init__(self):
         self.iterations = []
+        self.stats = Statistics()
+
+class Iteration(object):
+    '''
+    '''
+    def __init__(self):
+        self.load_times = {}
 
 class Statistics(object):
     '''
     '''
     def __init__(self):
-        import math  # conditional import made when instantiated
         self.averages  = {}
         self.variances = {}
         self.std_devs  = {}
-    
-    def average(self, l):
-        ''' 
-        '''
-        pass
-    
-    def std_dev(self, avg, l):
-        '''
-        '''
-        pass
     
 if __name__ == '__main__':
     main()
