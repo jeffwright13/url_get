@@ -7,6 +7,7 @@ Requires Python 2. Does not work on Python 3 due to inconsistencies in the synta
 
 Module reqts:
 - selenium
+- numpy
 - os (builtin)
 - time (builtin)
 
