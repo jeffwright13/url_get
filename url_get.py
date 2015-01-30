@@ -224,7 +224,6 @@ class Statistics(object):
     '''
     '''
     def __init__(self):
-        self.times     = {}
         self.averages  = {}
         self.variances = {}
         self.std_devs  = {}
