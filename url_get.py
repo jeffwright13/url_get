@@ -2,8 +2,8 @@
 
 def main():
     # Internal execution variables
-    input_file = 'URLs/2URLs.txt'
-    num_iterations = 2
+    input_file = 'URLs/40URLs.txt'
+    num_iterations = 5
     browser = 'Firefox' # Valid choices: "Firefox", "Ie"
     
     # main execution class instance
@@ -28,12 +28,16 @@ def main():
         results = visit_urls(URLs, browser)
         testRun.iterations[iter].load_times = results
         
-        # Write the 'results' dictionary to the file 'output_file'
+        # Write this iteration's results to file
         filename = 'logs/' + get_filename() + '.csv'
-        write_to_logfile(filename, results)
+        write_to_logfile(filename, results, 'log')
         
     # Run final results thru stats generator
-    statistics = generate_stats(testRun)
+    generate_stats(testRun)
+    
+    # Write the whoe test run's stats to file
+    filename = 'logs/' + get_filename() + '_stats' + '.csv'
+    write_to_logfile(filename, testRun.stats.averages, 'stats')
     
 def get_urls(url_file):
     '''
@@ -111,7 +115,7 @@ def visit_urls(url_dict, br):
     
     return results_dict
 
-def write_to_logfile(log_file, dict):
+def write_to_logfile(log_file, dict, type=None):
     '''
     Synopsis:
         write_to_logfile(log_file)
@@ -121,19 +125,28 @@ def write_to_logfile(log_file, dict):
     Input Arguments:
         log_file: Name of a log file to write/create
         dict: dictionary of key,value pairs to write to log_file
+        type: type of logfile to write ('log', 'stats')
     
     Returns:
         None
     '''
-
     import os.path
+    
     directory = os.path.dirname(log_file)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
+    if type == 'log':
+        header_row = 'URL' + ',' + 'Load Time'
+    elif type == 'stats':
+        header_row = 'URL' + ',' + 'Avg load Time'
+    else:
+        raise Exception, 'Invalid type passed to function write_to_logfile()'
+
     try:
         fh = open(log_file, 'w')
         
+        fh.write(header_row + '\n')
         for key, value in dict.iteritems():
             fh.write(key + ',' + str(value) + '\n')
         
@@ -177,23 +190,22 @@ def generate_stats(testRunObj):
     import numpy
     
     url_list = testRunObj.iterations[0].load_times.keys()
-    for elem in url_list:
-        testRunObj.stats.averages[elem] = 0
-    print "url_list: ", url_list
-    print "stats_avgs: ", testRunObj.stats.averages
+    N = len(testRunObj.iterations)
+    K = len(url_list)
+    print "N (# iterations), K (# URLs): ", (N, K)
     
-    # print testRunObj.iterations
-    for iter in testRunObj.iterations:
-        print iter.load_times.keys()
-        print iter.load_times.values()
+    for url in url_list:
+        time_list = []
+        for iter in testRunObj.iterations:
+            time_list.append(iter.load_times[url])
+
+        testRunObj.stats.averages[url] = numpy.average(time_list)
+        testRunObj.stats.variances[url] = numpy.var(time_list)
+        testRunObj.stats.std_devs[url] = numpy.std(time_list)
         
-    print '\n'
-    loadtimes = iter.load_times.values()
-    average = numpy.average(loadtimes)
-    variance = numpy.var(loadtimes)
-    std_dev = numpy.std(loadtimes)
-    
-    print average, variance, std_dev
+    print "Averages: \n", testRunObj.stats.averages
+    print "Variances: \n", testRunObj.stats.variances
+    print "Std Devs: \n", testRunObj.stats.std_devs
 
 class TestRun(object):
     '''
@@ -212,9 +224,11 @@ class Statistics(object):
     '''
     '''
     def __init__(self):
+        self.times     = {}
         self.averages  = {}
         self.variances = {}
         self.std_devs  = {}
-    
+
 if __name__ == '__main__':
     main()
+
